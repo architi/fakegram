@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { authApi } from "../firebaseApi/auth.js";
+import { useNavigate } from "react-router-dom";
+
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -7,8 +9,6 @@ export default function SignUp() {
     password: "",
   });
 
-  authApi.getUser();
-  
   function handleChange(e) {
     const { name, value } = e.target;
 
@@ -17,6 +17,8 @@ export default function SignUp() {
       [name]: value,
     }));
   }
+
+  const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -28,8 +30,9 @@ export default function SignUp() {
 
     console.log("Signing Up:", formData);
     authApi.signUp(formData.email, formData.password);
-
+    
     setFormData({ email: "", password: "" });
+    navigate("/");
   }
 
   return (
